@@ -12,6 +12,6 @@ module "vpc" {
   public_subnets       = ["10.0.3.0/24", "10.0.4.0/24"]
   enable_dns_hostnames = true
 
-  tags = var.tags
+  tags               = var.tags
   public_subnet_tags = var.public_subnet_tags
 }

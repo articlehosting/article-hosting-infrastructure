@@ -2,11 +2,6 @@ data "aws_route53_zone" "main" {
   name = var.domain_name
 }
 
-data "helm_repository" "stable" {
-  name = "stable"
-  url  = "https://kubernetes-charts.storage.googleapis.com"
-}
-
 resource "aws_iam_role_policy" "dns_update" {
   role = var.role_name
 
@@ -39,39 +34,43 @@ POLICY
 }
 
 resource "helm_release" "external_dns" {
-  name = "external-dns"
-  chart = "external-dns"
-  repository = data.helm_repository.stable.metadata[0].name
-  version = "2.19.0"
-  namespace = var.namespace
+  name       = "external-dns"
+  chart      = "external-dns"
+  repository = "https://kubernetes-charts.storage.googleapis.com"
+  version    = "2.19.0"
+  namespace  = var.namespace
 
   set {
-	name  = "sources[0]"
-	value = "service"
+    name  = "sources[0]"
+    value = "service"
   }
 
   set {
-	name  = "policy"
-	value = "sync"
+    name  = "policy"
+    value = "sync"
   }
 
   set {
-	name  = "provider"
-	value = "aws"
+    name  = "provider"
+    value = "aws"
   }
 
   set {
-	name  = "aws.zoneType"
-	value = "public"
+    name  = "aws.zoneType"
+    value = "public"
   }
 
   set {
-	name  = "zoneIdFilters[0]"
-	value = data.aws_route53_zone.main.zone_id
+    name  = "zoneIdFilters[0]"
+    value = data.aws_route53_zone.main.zone_id
   }
 
   set {
-	name  = "txtOwnerId"
-	value = var.owner_id
+    name  = "txtOwnerId"
+    value = var.owner_id
+  }
+  set {
+    name  = "service.beta.kubernetes.io/aws-load-balancer-ssl-cert"
+    value = var.certificate_arn
   }
 }

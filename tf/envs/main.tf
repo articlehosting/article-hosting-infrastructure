@@ -1,5 +1,5 @@
 provider "aws" {
-  region  = var.region
+  region = var.region
 }
 
 provider "kubernetes" {
@@ -12,25 +12,25 @@ provider "kubernetes" {
 
 provider "helm" {
   kubernetes {
-	host = module.kube_cluster.kubernetes_config.host
-	cluster_ca_certificate = module.kube_cluster.kubernetes_config.cluster_ca_certificate
-	token =  module.kube_cluster.kubernetes_config.token
-	load_config_file = false
+    host                   = module.kube_cluster.kubernetes_config.host
+    cluster_ca_certificate = module.kube_cluster.kubernetes_config.cluster_ca_certificate
+    token                  = module.kube_cluster.kubernetes_config.token
+    load_config_file       = false
   }
   version = "~> 1.2"
 }
 
 terraform {
   backend "s3" {
-	bucket = "libero-terraform"
-	# specify with terraform init --backend-config="key=<env>/terraform.tfstate" to make it dynamic
-	region = "us-east-1"
+    bucket = "libero-terraform"
+    # specify with terraform init --backend-config="key=<env>/terraform.tfstate" to make it dynamic
+    region = "us-east-1"
   }
   required_version = ">= 0.12.0"
 }
 
 locals {
-  cluster_name = "hive-eks-${var.env}"
+  cluster_name = "hive-eks--${var.env}"
 }
 
 module "vpc" {
@@ -54,9 +54,19 @@ module "kube_cluster" {
   subnets      = module.vpc.subnets
 }
 
-module "kube_dns" {
-  source = "../../modules/kubernetes_dns"
-  domain_name = var.domain_name
-  owner_id = local.cluster_name
-  role_name = module.kube_cluster.worker_iam_role_name
+module "ssl_cert" {
+  source                            = "../../modules/acm_certificate"
+  domain_name                       = var.domain_name
+  zone_name                         = var.domain_name
+  subject_alternative_names         = ["*.${var.domain_name}"]
+  process_domain_validation_options = true
 }
+
+module "kube_dns" {
+  source          = "../../modules/kubernetes_dns"
+  domain_name     = var.domain_name
+  owner_id        = local.cluster_name
+  role_name       = module.kube_cluster.worker_iam_role_name
+  certificate_arn = module.ssl_cert.arn
+}
+
