@@ -29,6 +29,7 @@ jobs:
           AWS_DEFAULT_REGION: us-east-1
 
       - name: Apply
+        if: false == true
         run: |
           cd tf/envs/curie
           $TERRAFORM apply /tmp/curie.plan
