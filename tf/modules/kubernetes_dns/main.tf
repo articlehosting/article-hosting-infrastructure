@@ -69,8 +69,4 @@ resource "helm_release" "external_dns" {
     name  = "txtOwnerId"
     value = var.owner_id
   }
-  set {
-    name  = "service.beta.kubernetes.io/aws-load-balancer-ssl-cert"
-    value = var.certificate_arn
-  }
 }

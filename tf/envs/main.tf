@@ -7,7 +7,7 @@ provider "kubernetes" {
   cluster_ca_certificate = module.kube_cluster.kubernetes_config.cluster_ca_certificate
   token                  = module.kube_cluster.kubernetes_config.token
   load_config_file       = false
-  version                = "~> 1.10"
+  version                = "~> 1.11"
 }
 
 provider "helm" {
@@ -37,10 +37,10 @@ module "vpc" {
   source = "../../modules/vpc"
   name   = var.env
   tags = {
-    "kubernetes.io/cluster/${var.env}" = "shared"
+    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
   }
   public_subnet_tags = {
-    "kubernetes.io/cluster/${var.env}" = "shared"
+    "kubernetes.io/cluster/${local.cluster_name}" = "shared"
     "kubernetes.io/role/elb"           = "1"
   }
 }
