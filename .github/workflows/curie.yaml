@@ -1,0 +1,38 @@
+name: Curie
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  TERRAFORM: ../../terraform
+
+jobs:
+  terraform:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          scripts/download-terraform.sh
+
+      - name: Plan
+        run: |
+          cd tf/envs/curie
+          $TERRAFORM init --backend-config="key=curie/terraform.tfstate" -input=false
+          $TERRAFORM plan -out /tmp/curie.plan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
+
+      - name: Apply
+        run: |
+          cd tf/envs/curie
+          $TERRAFORM apply /tmp/curie.plan
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: us-east-1
