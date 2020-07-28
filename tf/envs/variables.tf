@@ -34,3 +34,15 @@ variable "map_users" {
   ]
   description = "IAM users that can access the cluster"
 }
+
+variable "mongo_username" {
+  type        = string
+  default     = ""
+  description = "Mongo DB password secret"
+}
+
+variable "mongo_password" {
+  type        = string
+  default     = ""
+  description = "Mongo DB password secret"
+}
