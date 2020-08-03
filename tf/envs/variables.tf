@@ -31,6 +31,12 @@ variable "map_users" {
       username = "GithubActions"
       groups   = ["system:masters"]
     },
+    {
+      userarn  = "arn:aws:iam::540790251273:user/RomanTudvasev"
+      username = "RomanTudvasev"
+      groups   = ["system:masters"]
+    },
+
   ]
   description = "IAM users that can access the cluster"
 }
