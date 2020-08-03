@@ -12,7 +12,6 @@ resource "aws_acm_certificate" "main_cert" {
 
 locals {
   zone_name                      = var.zone_name == "" ? var.domain_name : var.zone_name
-  domain_validation_options_list = aws_acm_certificate.main_cert.0.domain_validation_options
 }
 
 data "aws_route53_zone" "default" {
@@ -21,13 +20,20 @@ data "aws_route53_zone" "default" {
 }
 
 resource "aws_route53_record" "default" {
-  count           = length(var.subject_alternative_names) + 1
   zone_id         = join("", data.aws_route53_zone.default.*.zone_id)
   ttl             = var.ttl
   allow_overwrite = true
-  name            = lookup(local.domain_validation_options_list[count.index], "resource_record_name")
-  type            = lookup(local.domain_validation_options_list[count.index], "resource_record_type")
-  records         = [lookup(local.domain_validation_options_list[count.index], "resource_record_value")]
+
+  for_each = {
+	for dvo in aws_acm_certificate.main_cert.0.domain_validation_options : dvo.domain_name => {
+	  name = dvo.resource_record_name
+	  record = dvo.resource_record_value
+	  type = dvo.resource_record_type
+	}
+  }
+  name            = each.value.name
+  type            = each.value.type
+  records         = [each.value.record]
 }
 
 resource "aws_acm_certificate_validation" "default" {
