@@ -30,7 +30,7 @@ terraform {
 }
 
 locals {
-  cluster_name = "hive-eks--${var.env}"
+  cluster_name        = "hive-eks--${var.env}"
 }
 
 module "vpc" {
@@ -70,3 +70,12 @@ module "kube_dns" {
   certificate_arn = module.ssl_cert.arn
 }
 
+module "document_db" {
+  source              = "../../modules/document_db"
+  
+  docdb_subnets       = module.vpc.subnets
+  vpc_id              = module.vpc.vpc_id
+  vpc_cidr            = module.vpc.vpc_cidr
+  docdb_username      = var.docdb_user
+  docdb_password      = var.docdb_pass
+}

@@ -7,3 +7,7 @@ output "subnets" {
   value       = module.vpc.public_subnets
   description = "List of the public subnets created in the VPC"
 }
+
+output "vpc_cidr" {
+  value       = module.vpc.vpc_cidr_block
+}
