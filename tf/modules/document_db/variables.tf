@@ -1,13 +1,11 @@
 variable "docdb_username" {
     type        = string
     description = "Master username for DocumentDB"
-    default     = ""
 }
 
 variable "docdb_password" {
     type        = string
     description = "Master password for DocumentDB"
-    default     = ""
 }
 
 variable "docdb_instance_count" {

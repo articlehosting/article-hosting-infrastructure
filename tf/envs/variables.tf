@@ -56,11 +56,9 @@ variable "mongo_password" {
 variable "docdb_user" {
     type        = string
     description = "Master username for DocumentDB"
-    default     = ""
 }
 
 variable "docdb_pass" {
     type        = string
     description = "Master password for DocumentDB"
-    default     = ""
 }
