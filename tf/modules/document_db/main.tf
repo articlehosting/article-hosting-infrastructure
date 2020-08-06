@@ -1,5 +1,18 @@
-data "aws_availability_zones" "az_zones" {
+data "aws_subnet_ids" "subnets" {
+    vpc_id  = var.vpc_id
 }
+
+data "aws_subnet" "subnet_az" {
+    for_each    = data.aws_subnet_ids.subnets.ids
+    id          = each.value
+}
+
+/*
+    An important note 
+    DocumentDB has a limitation on how many AZs a cluster could be placed in.
+    Current limit is - 2 AZs in cluster
+    In case of changes filter in data sources above must be modified
+*/
 
 resource "aws_security_group" "docdb_access" {
     name        = "hive-docdb-access-sg"
@@ -39,7 +52,7 @@ resource "aws_docdb_cluster" "articles_document_db_cluster" {
     master_username     = var.docdb_username
     master_password     = var.docdb_password
 
-    availability_zones      = data.aws_availability_zones.az_zones.names
+    availability_zones      = [for az in data.aws_subnet.subnet_az : az.availability_zone]
     db_subnet_group_name    = aws_docdb_subnet_group.docdb_subnets.id
     vpc_security_group_ids  = [aws_security_group.docdb_access.id]
 
