@@ -57,6 +57,7 @@ resource "aws_docdb_cluster" "articles_document_db_cluster" {
     vpc_security_group_ids  = [aws_security_group.docdb_access.id]
 
     deletion_protection = "true"
+    skip_final_snapshot = true
 }
 
 resource "aws_docdb_cluster_instance" "articles_docdb_instance" {

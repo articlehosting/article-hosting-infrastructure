@@ -26,8 +26,8 @@ controller:
             service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "3600"
             service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "creator=ingress,cluster=${var.k8s_cluster_name}"
     config:
-        use-forwarded-headers:
-        use-http2: 
+        use-forwarded-headers: "true"
+        use-http2: "true"
     resources:
         limits:
             memory: 200Mi
