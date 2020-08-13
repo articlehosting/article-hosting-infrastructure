@@ -56,7 +56,6 @@ resource "aws_docdb_cluster" "articles_document_db_cluster" {
     db_subnet_group_name    = aws_docdb_subnet_group.docdb_subnets.id
     vpc_security_group_ids  = [aws_security_group.docdb_access.id]
 
-    deletion_protection         = true
     skip_final_snapshot         = true
     final_snapshot_identifier   = "hive-docdb-curie-fs"
 }
