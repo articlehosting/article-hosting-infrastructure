@@ -15,69 +15,32 @@ resource "helm_release" "nginx_ingress_controller" {
     version     = var.k8s_ingress_chart_version
     namespace   = var.k8s_ingress_namespace
 
-    set {
-        name    = "controller.replicaCount"
-        value   = "1"
-    }
-
-    set {
-        name    = "controller.annotations.service.beta.kubernetes.io/aws-load-balancer-ssl-cert"
-        value   = data.aws_acm_certificate.issued_certificate.arn
-    }
-
-    set {
-        name    = "controller.annotations.service.beta.kubernetes.io/aws-load-balancer-backend-protocol"
-        value   = "tcp"
-    }
-
-    set {
-        name    = "controller.annotations.service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled"
-        value   = "true"
-    }
-
-    set {
-        name    = "controller.annotations.service.beta.kubernetes.io/aws-load-balancer-type"
-        value   = "nlb"
-    }
-
-    set {
-        name    = "controller.annotations.service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout"
-        value   = "3600"
-    }
-
-    set {
-        name    = "controller.annotations.service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags"
-        value   = "creator=ingress,cluster=${var.k8s_cluster_name}"
-    }
+    values = [<<EOF
+controller:
+    replicaCount: 1
+    service:
+        annotations: 
+            service.beta.kubernetes.io/aws-load-balancer-ssl-cert: ${data.aws_acm_certificate.issued_certificate.arn}
+            service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
+            service.beta.kubernetes.io/aws-load-balancer-type: nlb
+            service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "3600"
+            service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "creator=ingress,cluster=${var.k8s_cluster_name}"
+    config:
+        use-forwarded-headers:
+        use-http2: 
+    resources:
+        limits:
+            memory: 200Mi
+        requests:
+            cpu: 100m
+            memory: 100Mi
+EOF
+    ]
 /*
     set {
         name    = "controller.extraArgs.default-ssl-certificate"
         value   = data.aws_acm_certificate.issued_certificate.name
     }
 */
-    set {
-        name    = "controller.config.use-forwarded-headers"
-        value   = "true"
-    }
-
-    set {
-        name    = "controller.config.use-http2"
-        value   = "true"
-    }
-
-    set {
-        name    = "controller.resources.limits.memory"
-        value   = "200Mi"
-    }
-
-    set {
-        name    = "controller.resources.requests.cpu"
-        value   = "100m"
-    }
-
-    set {
-        name    = "controller.resources.requests.memory"
-        value   = "100Mi"
-    }
 
 }
