@@ -43,7 +43,7 @@ resource "aws_docdb_subnet_group" "docdb_subnets" {
     subnet_ids  = var.docdb_subnets
 }
 
-resource "aws_docdb_cluster" "articles_document_db_cluster" {
+resource "aws_docdb_cluster" "articles_document_db" {
     cluster_identifier  = "hive-docdb-curie"
     engine_version      = "3.6.0"
     engine              = "docdb"
@@ -64,5 +64,5 @@ resource "aws_docdb_cluster_instance" "articles_docdb_instance" {
     identifier          = "hive-docdb-curie-${count.index}"
     engine              = "docdb"
     instance_class      = "db.t3.medium"
-    cluster_identifier  = aws_docdb_cluster.articles_document_db_cluster.id
+    cluster_identifier  = aws_docdb_cluster.articles_document_db.id
 }
