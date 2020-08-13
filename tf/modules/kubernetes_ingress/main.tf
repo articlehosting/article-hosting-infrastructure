@@ -8,7 +8,7 @@ data "aws_acm_certificate" "issued_certificate" {
     most_recent = true
 }
 
-resource "helm_release" "external_dns" {
+resource "helm_release" "nginx_ingress_controller" {
     name        = "ingress-nginx"
     chart       = var.k8s_ingress_chart_name
     repository  = var.k8s_ingress_chart_repo
@@ -21,32 +21,32 @@ resource "helm_release" "external_dns" {
     }
 
     set {
-        name    = "controller.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-ssl-cert"
+        name    = "controller.annotations.service.beta.kubernetes.io/aws-load-balancer-ssl-cert"
         value   = data.aws_acm_certificate.issued_certificate.arn
     }
 
     set {
-        name    = "controller.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-backend-protocol"
+        name    = "controller.annotations.service.beta.kubernetes.io/aws-load-balancer-backend-protocol"
         value   = "tcp"
     }
 
     set {
-        name    = "controller.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-cross-zone-load-balancing-enabled"
+        name    = "controller.annotations.service.beta.kubernetes.io/aws-load-balancer-cross-zone-load-balancing-enabled"
         value   = "true"
     }
 
     set {
-        name    = "controller.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-type"
+        name    = "controller.annotations.service.beta.kubernetes.io/aws-load-balancer-type"
         value   = "nlb"
     }
 
     set {
-        name    = "controller.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-connection-idle-timeout"
+        name    = "controller.annotations.service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout"
         value   = "3600"
     }
 
     set {
-        name    = "controller.annotations.service\\.beta\\.kubernetes\\.io/aws-load-balancer-additional-resource-tags"
+        name    = "controller.annotations.service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags"
         value   = "creator=ingress,cluster=${var.k8s_cluster_name}"
     }
 /*
