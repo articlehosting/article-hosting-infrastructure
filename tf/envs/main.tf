@@ -79,3 +79,9 @@ module "document_db" {
   docdb_username      = var.docdb_user
   docdb_password      = var.docdb_pass
 }
+
+module "kube_ingress_controller" {
+  source              = "../../modules/kubernetes_ingress"
+  k8s_cluster_name    = local.cluster_name
+  domain_name         = var.domain_name
+}
