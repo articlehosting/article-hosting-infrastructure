@@ -57,7 +57,6 @@ resource "aws_docdb_cluster" "articles_document_db_cluster" {
     vpc_security_group_ids  = [aws_security_group.docdb_access.id]
 
     skip_final_snapshot         = true
-    final_snapshot_identifier   = "hive-docdb-curie-fs"
 }
 
 resource "aws_docdb_cluster_instance" "articles_docdb_instance" {
