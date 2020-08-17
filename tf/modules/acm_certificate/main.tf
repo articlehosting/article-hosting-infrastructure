@@ -11,7 +11,7 @@ resource "aws_acm_certificate" "main_cert" {
 }
 
 locals {
-  zone_name                      = var.zone_name == "" ? var.domain_name : var.zone_name
+  zone_name = var.zone_name == "" ? var.domain_name : var.zone_name
 }
 
 data "aws_route53_zone" "default" {
@@ -25,15 +25,15 @@ resource "aws_route53_record" "default" {
   allow_overwrite = true
 
   for_each = {
-	for dvo in aws_acm_certificate.main_cert.0.domain_validation_options : dvo.domain_name => {
-	  name = dvo.resource_record_name
-	  record = dvo.resource_record_value
-	  type = dvo.resource_record_type
-	}
+    for dvo in aws_acm_certificate.main_cert.0.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
   }
-  name            = each.value.name
-  type            = each.value.type
-  records         = [each.value.record]
+  name    = each.value.name
+  type    = each.value.type
+  records = [each.value.record]
 }
 
 resource "aws_acm_certificate_validation" "default" {

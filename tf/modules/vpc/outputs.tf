@@ -9,5 +9,5 @@ output "subnets" {
 }
 
 output "vpc_cidr" {
-  value       = module.vpc.vpc_cidr_block
+  value = module.vpc.vpc_cidr_block
 }

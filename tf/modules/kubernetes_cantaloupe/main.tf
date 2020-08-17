@@ -1,6 +1,6 @@
 
 resource "helm_release" "cantaloupe_service" {
-  name = "cantaloupe"
+  name  = "cantaloupe"
   chart = "./chart"
 
   values = [<<EOF

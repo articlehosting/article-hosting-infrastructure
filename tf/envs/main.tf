@@ -30,7 +30,7 @@ terraform {
 }
 
 locals {
-  cluster_name        = "hive-eks--${var.env}"
+  cluster_name = "hive-eks--${var.env}"
 }
 
 module "vpc" {
@@ -71,17 +71,17 @@ module "kube_dns" {
 }
 
 module "document_db" {
-  source              = "../../modules/document_db"
-  
-  docdb_subnets       = module.vpc.subnets
-  vpc_id              = module.vpc.vpc_id
-  vpc_cidr            = module.vpc.vpc_cidr
-  docdb_username      = var.docdb_user
-  docdb_password      = var.docdb_pass
+  source = "../../modules/document_db"
+
+  docdb_subnets  = module.vpc.subnets
+  vpc_id         = module.vpc.vpc_id
+  vpc_cidr       = module.vpc.vpc_cidr
+  docdb_username = var.docdb_user
+  docdb_password = var.docdb_pass
 }
 
 module "kube_ingress_controller" {
-  source              = "../../modules/kubernetes_ingress"
-  k8s_cluster_name    = local.cluster_name
-  domain_name         = var.domain_name
+  source           = "../../modules/kubernetes_ingress"
+  k8s_cluster_name = local.cluster_name
+  domain_name      = var.domain_name
 }

@@ -54,11 +54,11 @@ variable "mongo_password" {
 }
 
 variable "docdb_user" {
-    type        = string
-    description = "Master username for DocumentDB"
+  type        = string
+  description = "Master username for DocumentDB"
 }
 
 variable "docdb_pass" {
-    type        = string
-    description = "Master password for DocumentDB"
+  type        = string
+  description = "Master password for DocumentDB"
 }
