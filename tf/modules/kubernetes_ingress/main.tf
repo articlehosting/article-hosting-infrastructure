@@ -1,21 +1,25 @@
+data "aws_route53_zone" "main_domain_name" {
+    name = var.domain_name
+}
+
 data "aws_acm_certificate" "issued_certificate" {
-  domain      = var.domain_name
-  statuses    = ["ISSUED"]
-  most_recent = true
+    domain      = data.aws_route53_zone.main_domain_name.name
+    statuses    = ["ISSUED"]
+    most_recent = true
 }
 
 resource "helm_release" "nginx_ingress_controller" {
-  name       = "ingress-nginx"
-  chart      = var.k8s_ingress_chart_name
-  repository = var.k8s_ingress_chart_repo
-  version    = var.k8s_ingress_chart_version
-  namespace  = var.k8s_ingress_namespace
+    name        = "ingress-nginx"
+    chart       = var.k8s_ingress_chart_name
+    repository  = var.k8s_ingress_chart_repo
+    version     = var.k8s_ingress_chart_version
+    namespace   = var.k8s_ingress_namespace
 
-  values = [<<EOF
+    values = [<<EOF
 controller:
     replicaCount: 1
     service:
-        annotations:
+        annotations: 
             service.beta.kubernetes.io/aws-load-balancer-ssl-cert: ${data.aws_acm_certificate.issued_certificate.arn}
             service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
             service.beta.kubernetes.io/aws-load-balancer-type: nlb
@@ -31,12 +35,50 @@ controller:
             cpu: 100m
             memory: 100Mi
 EOF
-  ]
-  /*
+    ]
+/*
     set {
         name    = "controller.extraArgs.default-ssl-certificate"
         value   = data.aws_acm_certificate.issued_certificate.name
     }
 */
 
+}
+
+resource "kubernetes_ingress" "article_hosing_ingress" {
+    metadata {
+        name: "article-hosting-ingress"
+        annotations = {
+            "kubernetes.io/ingress.class": "nginx"
+            "nginx.ingress.kubernetes.io/rewrite-target": "/" 
+            "nginx.ingress.kubernetes.io/ssl-passthrough" = "true"
+        }
+    }
+
+    spec {
+        rule {
+            host: "article.hosting"
+            http {
+                path {
+                    path = "/"
+
+                    backend {
+                        serviceName = "article-hosting--prod--frontend"
+                        servicePort = 80
+                    }
+                }
+
+                path {
+                    path = "/iiif/2"
+
+                    backend {
+                        serviceName = "image-server--cantaloupe"
+                        servicePort = 8182
+                    }
+                }
+            }
+        }
+    }
+
+    wait_for_load_balancer = true
 }
