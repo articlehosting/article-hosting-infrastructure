@@ -1,6 +1,5 @@
 resource "aws_s3_bucket" "article_storage" {
   bucket = var.bucket_name
-  region = var.bucket_region
   acl    = "private"
 }
 
