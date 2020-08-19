@@ -99,4 +99,6 @@ module "kube_cantaloupe" {
   s3_access_key = module.article_storage.key
   s3_secret_key = module.article_storage.secret
   s3_endpoint   = local.s3_endpoint
+
+  service_depends_on = [module.article_storage.key]
 }

@@ -29,3 +29,8 @@ variable "s3_secret_key" {
   type        = string
   description = "S3 Secret key used to access service"
 }
+
+variable "service_depends_on" {
+  type = any
+  default = null
+}

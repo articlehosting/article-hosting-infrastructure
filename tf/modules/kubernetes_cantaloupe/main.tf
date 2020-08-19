@@ -1,5 +1,6 @@
 
 resource "helm_release" "cantaloupe_service" {
+  depends_on = [var.service_depends_on]
   name  = "cantaloupe"
   chart = "./chart"
 
