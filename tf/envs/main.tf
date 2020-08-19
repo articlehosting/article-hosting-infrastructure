@@ -30,7 +30,7 @@ terraform {
 }
 
 locals {
-  cluster_name = "hive-eks-temp--${var.env}"
+  cluster_name = "hive-eks--${var.env}"
 }
 
 module "vpc" {
