@@ -1,9 +1,5 @@
-data "aws_route53_zone" "main_domain_name" {
-  name = var.domain_name
-}
-
 data "aws_acm_certificate" "issued_certificate" {
-  domain      = data.aws_route53_zone.main_domain_name.name
+  domain      = var.domain_name
   statuses    = ["ISSUED"]
   most_recent = true
 }
@@ -19,7 +15,7 @@ resource "helm_release" "nginx_ingress_controller" {
 controller:
     replicaCount: 1
     service:
-        annotations: 
+        annotations:
             service.beta.kubernetes.io/aws-load-balancer-ssl-cert: ${data.aws_acm_certificate.issued_certificate.arn}
             service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
             service.beta.kubernetes.io/aws-load-balancer-type: nlb
