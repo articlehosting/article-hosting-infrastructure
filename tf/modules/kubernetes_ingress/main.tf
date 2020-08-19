@@ -47,24 +47,24 @@ EOF
 
 resource "kubernetes_ingress" "article_hosing_ingress" {
     metadata {
-        name: "article-hosting-ingress"
+        name = "article-hosting-ingress"
         annotations = {
-            "kubernetes.io/ingress.class": "nginx"
-            "nginx.ingress.kubernetes.io/rewrite-target": "/" 
+            "kubernetes.io/ingress.class" = "nginx"
+            "nginx.ingress.kubernetes.io/rewrite-target" = "/" 
             "nginx.ingress.kubernetes.io/ssl-passthrough" = "true"
         }
     }
 
     spec {
         rule {
-            host: "article.hosting"
+            host = "article.hosting"
             http {
                 path {
                     path = "/"
 
                     backend {
-                        serviceName = "article-hosting--prod--frontend"
-                        servicePort = 80
+                        service_name = "article-hosting--prod--frontend"
+                        service_port = 80
                     }
                 }
 
@@ -72,8 +72,8 @@ resource "kubernetes_ingress" "article_hosing_ingress" {
                     path = "/iiif/2"
 
                     backend {
-                        serviceName = "image-server--cantaloupe"
-                        servicePort = 8182
+                        service_name = "image-server--cantaloupe"
+                        service_port = 8182
                     }
                 }
             }
