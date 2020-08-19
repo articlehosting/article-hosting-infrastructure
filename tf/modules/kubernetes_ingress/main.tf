@@ -51,7 +51,8 @@ resource "kubernetes_ingress" "article_hosing_ingress" {
         annotations = {
             "kubernetes.io/ingress.class" = "nginx"
             "nginx.ingress.kubernetes.io/rewrite-target" = "/" 
-            "nginx.ingress.kubernetes.io/ssl-passthrough" = "true"
+           # "nginx.ingress.kubernetes.io/ssl-passthrough" = "true"
+            "external-dns.alpha.kubernetes.io/hostname" = var.domain_name
         }
     }
 
