@@ -1,9 +1,5 @@
-data "aws_route53_zone" "main_domain_name" {
-    name = var.domain_name
-}
-
 data "aws_acm_certificate" "issued_certificate" {
-    domain      = data.aws_route53_zone.main_domain_name.name
+    domain      = var.domain_name
     statuses    = ["ISSUED"]
     most_recent = true
 }
@@ -19,7 +15,7 @@ resource "helm_release" "nginx_ingress_controller" {
 controller:
     replicaCount: 1
     service:
-        annotations: 
+        annotations:
             service.beta.kubernetes.io/aws-load-balancer-ssl-cert: ${data.aws_acm_certificate.issued_certificate.arn}
             service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
             service.beta.kubernetes.io/aws-load-balancer-type: nlb
@@ -46,40 +42,40 @@ EOF
 }
 
 resource "kubernetes_ingress" "article_hosing_ingress" {
-    metadata {
-        name = "article-hosting-ingress"
-        annotations = {
-            "kubernetes.io/ingress.class" = "nginx"
-            "nginx.ingress.kubernetes.io/rewrite-target" = "/" 
-           # "nginx.ingress.kubernetes.io/ssl-passthrough" = "true"
-            "external-dns.alpha.kubernetes.io/hostname" = var.domain_name
-        }
-    }
+  metadata {
+	name = "article-hosting-ingress"
+	annotations = {
+	  "kubernetes.io/ingress.class" = "nginx"
+	  "nginx.ingress.kubernetes.io/rewrite-target" = "/"
+	  # "nginx.ingress.kubernetes.io/ssl-passthrough" = "true"
+	  "external-dns.alpha.kubernetes.io/hostname" = var.domain_name
+	}
+  }
 
-    spec {
-        rule {
-            host = "article.hosting"
-            http {
-                path {
-                    path = "/"
+  spec {
+	rule {
+	  http {
+		path {
+		  path = "/"
 
-                    backend {
-                        service_name = "article-hosting--prod--frontend"
-                        service_port = 80
-                    }
-                }
+		  backend {
+			service_name = "article-hosting--prod--frontend"
+			service_port = 80
+		  }
+		}
 
-                path {
-                    path = "/iiif/2"
+		path {
+		  path = "/images"
 
-                    backend {
-                        service_name = "image-server--cantaloupe"
-                        service_port = 8182
-                    }
-                }
-            }
-        }
-    }
+		  backend {
+			service_name = "image-server--cantaloupe"
+			service_port = 8182
+		  }
+		}
 
-    wait_for_load_balancer = true
+	  }
+	}
+  }
+
+  wait_for_load_balancer = true
 }

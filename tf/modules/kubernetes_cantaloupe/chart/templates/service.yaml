@@ -7,10 +7,10 @@ metadata:
     app.kubernetes.io/component: cantaloupe
 spec:
   ports:
-    - protocol: TCP
-      port: 8182
+    - name: default
+      protocol: TCP
+      port: 80
       targetPort: 8182
   selector:
       {{- include "articleHosting.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: cantaloupe
-    app: cantaloupe
