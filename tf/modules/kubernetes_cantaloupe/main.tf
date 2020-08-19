@@ -1,7 +1,8 @@
 
 resource "helm_release" "cantaloupe_service" {
-  name  = "cantaloupe"
-  chart = "./chart"
+  depends_on = [var.service_depends_on]
+  name  = "image-server"
+  chart = "../../modules/kubernetes_cantaloupe/chart"
 
   values = [<<EOF
 s3:

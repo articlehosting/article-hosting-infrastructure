@@ -30,7 +30,9 @@ terraform {
 }
 
 locals {
-  cluster_name = "hive-eks--${var.env}"
+  cluster_name        = "hive-eks--${var.env}"
+  storage_bucket_name = "hive-article-storage--${var.env}"
+  s3_endpoint         = "https://s3.${var.region}.amazonaws.com"
 }
 
 module "vpc" {
@@ -84,4 +86,19 @@ module "kube_ingress_controller" {
   source           = "../../modules/kubernetes_ingress"
   k8s_cluster_name = local.cluster_name
   domain_name      = var.domain_name
+}
+
+module "article_storage" {
+  source        = "../../modules/article-s3-storage"
+  bucket_name   = local.storage_bucket_name
+}
+
+module "kube_cantaloupe" {
+  source        = "../../modules/kubernetes_cantaloupe"
+  bucket_name   = local.storage_bucket_name
+  s3_access_key = base64encode(module.article_storage.key)
+  s3_secret_key = base64encode(module.article_storage.secret)
+  s3_endpoint   = base64encode(local.s3_endpoint)
+
+  service_depends_on = [module.article_storage.key]
 }

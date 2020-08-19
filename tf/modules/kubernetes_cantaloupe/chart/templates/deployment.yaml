@@ -73,7 +73,7 @@ spec:
             - name: CACHE_SERVER_DERIVATIVE
               value: "S3Cache"
             - name: CACHE_SERVIER_DERIVATIVE_TTL_SECONDS
-              value: 0
+              value: "0"
             - name: CACHE_SERVER_PURGE_MISSING
               value: "true"
             - name: CACHE_SERVER_WORKER_ENABLED
@@ -93,5 +93,5 @@ spec:
               protocol: TCP
           readinessProbe:
             httpGet:
-              path: /ping
+              path: /iiif/2
               port: http
