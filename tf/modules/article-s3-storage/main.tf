@@ -5,7 +5,7 @@ resource "aws_s3_bucket" "article_storage" {
 }
 
 resource "aws_iam_user" "article_storage" {
-  name = "article-storage-access-user"
+  name = "hive-article-storage-access-user"
   path = "/system/"
 }
 
@@ -14,7 +14,7 @@ resource "aws_iam_access_key" "article_storage" {
 }
 
 resource "aws_iam_user_policy" "article_storage_ro" {
-  name = "article_storage_read"
+  name = "hive-article-storage-read"
   user = aws_iam_user.article_storage.name
 
   policy = <<EOF
