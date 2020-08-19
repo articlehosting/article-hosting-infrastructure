@@ -5,8 +5,6 @@ metadata:
   labels:
     {{- include "articleHosting.labels" . | nindent 4 }}
     app.kubernetes.io/component: cantaloupe
-  annotations:
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
 spec:
   type: LoadBalancer
   ports:

@@ -96,9 +96,9 @@ module "article_storage" {
 module "kube_cantaloupe" {
   source        = "../../modules/kubernetes_cantaloupe"
   bucket_name   = local.storage_bucket_name
-  s3_access_key = module.article_storage.key
-  s3_secret_key = module.article_storage.secret
-  s3_endpoint   = local.s3_endpoint
+  s3_access_key = base64encode(module.article_storage.key)
+  s3_secret_key = base64encode(module.article_storage.secret)
+  s3_endpoint   = base64encode(local.s3_endpoint)
 
   service_depends_on = [module.article_storage.key]
 }
