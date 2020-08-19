@@ -6,15 +6,11 @@ metadata:
     {{- include "articleHosting.labels" . | nindent 4 }}
     app.kubernetes.io/component: cantaloupe
 spec:
-  type: LoadBalancer
   ports:
-    - targetPort: http
-      port: 80
-      protocol: TCP
-      name: http
-    - targetPort: http
-      port: 443
-      name: https
+    - protocol: TCP
+      port: 8182
+      targetPort: 8182
   selector:
       {{- include "articleHosting.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: cantaloupe
+    app: cantaloupe
