@@ -90,10 +90,8 @@ module "kube_ingress_controller" {
 
 module "article_storage" {
   source        = "../../modules/article-s3-storage"
-  bucket_region = var.region
   bucket_name   = local.storage_bucket_name
 }
-
 
 module "kube_cantaloupe" {
   source        = "../../modules/kubernetes_cantaloupe"
