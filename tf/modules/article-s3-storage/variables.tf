@@ -3,7 +3,7 @@ variable "bucket_name" {
   description = "Source Bucket name for cantaloupe"
 }
 
-variable "region" {
+variable "bucket_region" {
   type        = string
   default     = "us-east-1"
   description = "Region where to create bucket"

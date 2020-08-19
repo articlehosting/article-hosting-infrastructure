@@ -1,7 +1,7 @@
 resource "aws_s3_bucket" "article_storage" {
   bucket = var.bucket_name
-  region = var.region
-  acl = "private"
+  region = var.bucket_region
+  acl    = "private"
 }
 
 resource "aws_iam_user" "article_storage" {
@@ -10,7 +10,7 @@ resource "aws_iam_user" "article_storage" {
 }
 
 resource "aws_iam_access_key" "article_storage" {
-  user    = aws_iam_user.article_storage.name
+  user = aws_iam_user.article_storage.name
 }
 
 resource "aws_iam_user_policy" "article_storage_ro" {
