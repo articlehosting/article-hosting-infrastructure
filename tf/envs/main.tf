@@ -32,6 +32,7 @@ terraform {
 locals {
   cluster_name = "hive-eks--${var.env}"
   storage_bucket_name = "hive-article-storage--${var.env}"
+  s3_endpoint = "https://s3.${var.region}.amazonaws.com"
 }
 
 module "vpc" {
@@ -98,5 +99,5 @@ module "kube_cantaloupe" {
   bucket_name = local.storage_bucket_name
   s3_access_key = module.article_storage.key
   s3_secret_key = module.article_storage.secret
-  s3_endpoint = "https://s3.${var.region}.amazonaws.com"
+  s3_endpoint = local.s3_endpoint
 }
