@@ -53,7 +53,6 @@ resource "kubernetes_ingress" "article_hosing_ingress" {
 	  "kubernetes.io/ingress.class" = "nginx"
 	  "nginx.ingress.kubernetes.io/rewrite-target" = "/"
 	  # "nginx.ingress.kubernetes.io/ssl-passthrough" = "true"
-	  # "external-dns.alpha.kubernetes.io/hostname" = var.domain_name
 	}
   }
 
@@ -68,9 +67,28 @@ resource "kubernetes_ingress" "article_hosing_ingress" {
 			service_port = 80
 		  }
 		}
+	  }
+	}
+  }
 
+  wait_for_load_balancer = true
+}
+
+resource "kubernetes_ingress" "images_ingress" {
+  metadata {
+	name = "article-hosting-ingress"
+	annotations = {
+	  "kubernetes.io/ingress.class" = "nginx"
+	  "nginx.ingress.kubernetes.io/rewrite-target" = "/iiif/2/$2"
+	  # "nginx.ingress.kubernetes.io/ssl-passthrough" = "true"
+	}
+  }
+
+  spec {
+	rule {
+	  http {
 		path {
-		  path = "/images"
+		  path = "/images(/|$)(.*)"
 
 		  backend {
 			service_name = "image-server--cantaloupe"
