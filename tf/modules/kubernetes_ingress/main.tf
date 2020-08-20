@@ -76,7 +76,7 @@ resource "kubernetes_ingress" "article_hosing_ingress" {
 
 resource "kubernetes_ingress" "images_ingress" {
   metadata {
-	name = "article-hosting-ingress"
+	name = "images-ingress"
 	annotations = {
 	  "kubernetes.io/ingress.class" = "nginx"
 	  "nginx.ingress.kubernetes.io/rewrite-target" = "/iiif/2/$2"
