@@ -51,7 +51,7 @@ resource "kubernetes_ingress" "article_hosing_ingress" {
 	name = "article-hosting-ingress"
 	annotations = {
 	  "kubernetes.io/ingress.class" = "nginx"
-	  "nginx.ingress.kubernetes.io/rewrite-target" = "/"
+	  # "nginx.ingress.kubernetes.io/rewrite-target" = "/"
 	  # "nginx.ingress.kubernetes.io/ssl-passthrough" = "true"
 	}
   }
@@ -78,8 +78,8 @@ resource "kubernetes_ingress" "images_ingress" {
   metadata {
 	name = "images-ingress"
 	annotations = {
+	  "ingress.kubernetes.io/add-base-url": "true"
 	  "kubernetes.io/ingress.class" = "nginx"
-	  "nginx.ingress.kubernetes.io/rewrite-target" = "/iiif/2/$2"
 	  # "nginx.ingress.kubernetes.io/ssl-passthrough" = "true"
 	}
   }
@@ -88,7 +88,7 @@ resource "kubernetes_ingress" "images_ingress" {
 	rule {
 	  http {
 		path {
-		  path = "/images(/|$)(.*)"
+		  path = "/iiif"
 
 		  backend {
 			service_name = "image-server--cantaloupe"
