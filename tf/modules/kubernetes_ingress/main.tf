@@ -70,7 +70,7 @@ resource "kubernetes_ingress" "article_hosing_ingress" {
 		}
 
 		path {
-		  path = "/iiif/2"
+		  path = "/images"
 
 		  backend {
 			service_name = "image-server--cantaloupe"
