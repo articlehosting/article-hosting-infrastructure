@@ -15,10 +15,16 @@ resource "helm_release" "nginx_ingress_controller" {
 controller:
     replicaCount: 1
     service:
+        targetPorts:
+            http: http
+            https: http
+        labels:
         annotations:
+            external-dns.alpha.kubernetes.io/hostname: ${var.domain_name}
             service.beta.kubernetes.io/aws-load-balancer-ssl-cert: ${data.aws_acm_certificate.issued_certificate.arn}
-            service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "tcp"
-            service.beta.kubernetes.io/aws-load-balancer-type: nlb
+            service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http
+            service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https""
+            service.beta.kubernetes.io/aws-load-balancer-type: elb
             service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "3600"
             service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "creator=ingress,cluster=${var.k8s_cluster_name}"
     config:
@@ -65,11 +71,11 @@ resource "kubernetes_ingress" "article_hosing_ingress" {
 		}
 
 		path {
-		  path = "/images"
+		  path = "/iiif/2"
 
 		  backend {
 			service_name = "image-server--cantaloupe"
-			service_port = 8182
+			service_port = 80
 		  }
 		}
 
