@@ -22,11 +22,16 @@ resource "aws_iam_user_policy" "article_storage_ro" {
   "Statement": [
     {
       "Action": [
+        "s3:ListBucket",
         "s3:GetObject",
+		"s3:PutObject",
 		"s3:GetObjectVersion"
       ],
       "Effect": "Allow",
-      "Resource": "${aws_s3_bucket.article_storage.arn}"
+      "Resource": [
+        "${aws_s3_bucket.article_storage.arn}/*",
+        "${aws_s3_bucket.article_storage.arn}"
+	  ]
     }
   ]
 }
