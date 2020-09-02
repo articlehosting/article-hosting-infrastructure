@@ -4,12 +4,12 @@ resource "aws_s3_bucket" "import_bucket" {
 }
 
 resource "aws_sqs_queue" "import_queue" {
-  name                      = "${var.sqs_name}--${var.environment}.fifo"
+  name                      = "${var.sqs_name}--${var.environment}"
   delay_seconds             = 90
   max_message_size          = 2048
   message_retention_seconds = 86400
   receive_wait_time_seconds = 10
-  fifo_queue                = true
+  fifo_queue                = false
 
   policy = <<POLICY
 {
