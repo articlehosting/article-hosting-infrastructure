@@ -102,3 +102,8 @@ module "kube_cantaloupe" {
 
   service_depends_on = [module.article_storage.key]
 }
+
+module "import_sqs" {
+  source      = "../../modules/article-import-sqs"
+  environment = var.env
+}
