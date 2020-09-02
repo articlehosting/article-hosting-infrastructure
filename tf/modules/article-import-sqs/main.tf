@@ -19,7 +19,7 @@ resource "aws_sqs_queue" "import_queue" {
       "Effect": "Allow",
       "Principal": "*",
       "Action": "sqs:SendMessage",
-      "Resource": "arn:aws:sqs:*:*:s3-event-notification-queue",
+      "Resource": "arn:aws:sqs:*:*:${var.sqs_name}--${var.environment}",
       "Condition": {
         "ArnEquals": { "aws:SourceArn": "${aws_s3_bucket.import_bucket.arn}" }
       }
@@ -37,8 +37,9 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
   bucket = aws_s3_bucket.import_bucket.id
 
   queue {
-    id          = "new-article-upload"
-    queue_arn   = aws_sqs_queue.import_queue.arn
-    events      = ["s3:ObjectCreated:*"]
+    id              = "new-article-upload"
+    queue_arn       = aws_sqs_queue.import_queue.arn
+    events          = ["s3:ObjectCreated:*"]
+    filter_suffix   = ".zip"
   }
 }
