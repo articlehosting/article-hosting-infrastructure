@@ -4,7 +4,7 @@ resource "aws_s3_bucket" "import_bucket" {
 }
 
 resource "aws_sqs_queue" "import_queue" {
-  name                      = "${var.sqs_name}--${var.environment}"
+  name                      = "${var.sqs_name}--${var.environment}.fifo"
   delay_seconds             = 90
   max_message_size          = 2048
   message_retention_seconds = 86400
