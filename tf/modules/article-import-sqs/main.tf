@@ -43,3 +43,7 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
     filter_suffix   = ".zip"
   }
 }
+
+data "aws_sqs_queue" "data_import_queue" {
+  name  = aws_sqs_queue.import_queue.name
+}
