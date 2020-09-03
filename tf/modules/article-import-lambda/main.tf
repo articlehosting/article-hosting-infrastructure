@@ -31,7 +31,8 @@ resource "aws_lambda_function" "import_lambda" {
   function_name = "${var.lambda_name_prefix}-import-${var.environment}"
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "index.handler"
-  runtime = "nodejs12.x"
+  runtime       = "nodejs12.x"
+  filename      = "./templates/index.js"
 
   layers = [aws_lambda_layer_version.stencilla_layer.arn]
 
