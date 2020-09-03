@@ -23,7 +23,8 @@ EOF
 }
 
 resource "aws_lambda_layer_version" "stencilla_layer" {
-  layer_name = "stencilla_layer"
+  layer_name          = "stencilla_layer"
+  filename            = "./templates/index.js"
   compatible_runtimes = ["nodejs12.x"]
 }
 
