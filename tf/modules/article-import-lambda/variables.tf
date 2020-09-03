@@ -20,3 +20,9 @@ variable "queue_arn" {
     type        = string
     description = "SQS queue ARN"
 }
+
+variable "lambda_vpc_access_policy_arn" {
+    type        = string
+    description = "ARN of AWS Managed policy for Lambda VPC Access"
+    default     = "arn:aws:iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole"
+}
