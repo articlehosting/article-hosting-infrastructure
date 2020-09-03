@@ -27,6 +27,11 @@ resource "aws_iam_role_policy_attachment" "vpc_access_policy_attachment" {
   policy_arn  = var.lambda_vpc_access_policy_arn
 }
 
+resource "aws_iam_role_policy_attachment" "sqs_access_policy_attachment" {
+  role        = aws_iam_role.iam_for_lambda.name
+  policy_arn  = var.lambda_sqs_access_policy_arn
+}
+
 resource "aws_lambda_layer_version" "stencilla_layer" {
   layer_name          = "stencilla_layer"
   filename            = "index.zip"
