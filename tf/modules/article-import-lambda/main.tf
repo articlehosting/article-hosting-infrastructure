@@ -24,7 +24,7 @@ EOF
 
 resource "aws_lambda_layer_version" "stencilla_layer" {
   layer_name          = "stencilla_layer"
-  filename            = "index.js"
+  filename            = "index.zip"
   compatible_runtimes = ["nodejs12.x"]
 }
 
@@ -33,7 +33,7 @@ resource "aws_lambda_function" "import_lambda" {
   role          = aws_iam_role.iam_for_lambda.arn
   handler       = "index.handler"
   runtime       = "nodejs12.x"
-  filename      = "index.js"
+  filename      = "index.zip"
 
   layers = [aws_lambda_layer_version.stencilla_layer.arn]
 
