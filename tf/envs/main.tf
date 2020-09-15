@@ -107,11 +107,3 @@ module "import_sqs" {
   source      = "../../modules/article-import-sqs"
   environment = var.env
 }
-
-module "import_lambda" {
-  source            = "../../modules/article-import-lambda"
-  environment       = var.env
-  vpc_id            = module.vpc.vpc_id
-  lambda_sec_group  = module.document_db.docdb_sec_group_id
-  queue_arn         = module.import_sqs.output_sqs_arn
-}
