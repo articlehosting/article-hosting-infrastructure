@@ -3,6 +3,11 @@ resource "aws_s3_bucket" "import_bucket" {
   acl    = "private"
 }
 
+resource "aws_s3_bucket" "archive_bucket" {
+  bucket = "${var.archive_bucket_name}--${var.environment}"
+  acl    = "private"
+}
+
 resource "aws_sqs_queue" "import_queue" {
   name                      = "${var.sqs_name}--${var.environment}"
   delay_seconds             = 90

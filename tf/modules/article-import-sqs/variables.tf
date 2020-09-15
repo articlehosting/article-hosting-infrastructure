@@ -4,6 +4,12 @@ variable "import_bucket_name" {
     default     = "hive-article-hosting-import"
 }
 
+variable "archive_bucket_name" {
+    type        = string
+    description = "S3 bucket name for archives"
+    default     = "hive-article-hosting-archive"
+}
+
 variable "environment" {
     type        = string
 }
