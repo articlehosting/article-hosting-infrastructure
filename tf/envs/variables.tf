@@ -36,6 +36,11 @@ variable "map_users" {
       username = "RomanTudvasev"
       groups   = ["system:masters"]
     },
+    {
+      userarn  = "arn:aws:iam::540790251273:user/MaximAgrigoroae"
+      username = "MaximAgrigoroae"
+      groups   = ["system:masters"]
+    },
 
   ]
   description = "IAM users that can access the cluster"
