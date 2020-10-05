@@ -38,7 +38,7 @@ POLICY
   }
 }
 
-resource "aws_s3_bucket_notification" "bucket_notification" {
+resource "aws_s3_bucket_notification" "zip_bucket_notification" {
   bucket = aws_s3_bucket.import_bucket.id
 
   queue {
@@ -46,17 +46,6 @@ resource "aws_s3_bucket_notification" "bucket_notification" {
     queue_arn       = aws_sqs_queue.import_queue.arn
     events          = ["s3:ObjectCreated:*"]
     filter_suffix   = ".zip"
-  }
-}
-
-resource "aws_s3_bucket_notification" "bucket_notification_2" {
-  bucket = aws_s3_bucket.import_bucket.id
-
-  queue {
-    id              = "new-meca-article-upload"
-    queue_arn       = aws_sqs_queue.import_queue.arn
-    events          = ["s3:ObjectCreated:*"]
-    filter_suffix   = ".meca"
   }
 }
 
