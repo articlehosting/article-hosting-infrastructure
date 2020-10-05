@@ -49,6 +49,17 @@ resource "aws_s3_bucket_notification" "zip_bucket_notification" {
   }
 }
 
+resource "aws_s3_bucket_notification" "meca_bucket_notification" {
+  bucket = aws_s3_bucket.import_bucket.id
+
+  queue {
+    id              = "new-meca-article-upload"
+    queue_arn       = aws_sqs_queue.import_queue.arn
+    events          = ["s3:ObjectCreated:*"]
+    filter_suffix   = ".meca"
+  }
+}
+
 data "aws_sqs_queue" "data_import_queue" {
   name  = aws_sqs_queue.import_queue.name
 }
