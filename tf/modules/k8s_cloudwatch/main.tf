@@ -405,7 +405,7 @@ resource "kubernetes_daemonset" "fluend_daemon_set" {
 
                 container {
                     name    = "fluentd-cloudwatch"
-                    image   = "fluent/fluentd-kubernetes-daemonset:v1.7.3-debian-cloudwatch-1.0"
+                    image   = "fluent/fluentd-kubernetes-daemonset:v1.11.3-debian-cloudwatch-1.0"
 
                     env {
                         name = "REGION"
@@ -430,6 +430,15 @@ resource "kubernetes_daemonset" "fluend_daemon_set" {
                     env {
                         name    = "CI_VERSION"
                         value   = "k8s/1.2.2"
+                    }
+                    env {
+                        name    = "VERIFY_SSL"
+                        value   = "false"
+                    }
+                    
+                    env {
+                        name    = "K8S_METADATA_FILTER_VERIFY_SSL"
+                        value   = "false"
                     }
 
                     resources {
