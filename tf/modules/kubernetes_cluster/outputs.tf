@@ -16,3 +16,8 @@ output "kubernetes_config" {
   }
   description = "Kubernetes provider configuration"
 }
+
+output "kubernetes_oidc_url" {
+  value       = module.eks.cluster_oidc_issuer_url
+  description = "Cluster OIDC URL"
+}

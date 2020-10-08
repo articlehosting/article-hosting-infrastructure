@@ -68,3 +68,13 @@ variable "k8s_cluster_name" {
     type        = string
     description = "K8S cluster name"
 }
+
+variable "k8s_oidc_url" {
+    type        = string
+    description = "Cluster OIDC URL"
+}
+
+variable "environment" {
+    type        = string
+    description = "Environment name"
+}

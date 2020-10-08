@@ -1,5 +1,41 @@
 data "aws_region" "current" {}
 
+data "aws_iam_policy" "cw_iam_policy" {
+    arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+}
+
+resource "aws_iam_openid_connect_provider" "oidc_service_provide" {
+    url             = var.k8s_oidc_url 
+    client_id_list  = [
+        "sts.amazonaws.com"
+    ]
+}
+
+resource "aws_iam_role" "cw_iam_role" {
+    name                = "hive-eks-${var.environment}-monitoring-role"
+
+    assume_role_policy  = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "cw_policy_attachement" {
+    role        = aws_role.cw_iam_role.name
+    policy_arn  = data.aws_iam_policy.cw_iam_policy.arn
+}
+
 resource "kubernetes_namespace" "cw_namespace" {
   metadata {
     annotations = {
@@ -18,6 +54,9 @@ resource "kubernetes_service_account" "cw_service_acc" {
     metadata {
         name        = var.cw_service_acc_name
         namespace   = var.cw_namespace_name
+        annotations = {
+            "eks.amazonaws.com/role-arn" = aws_iam_role.cw_iam_role.arn
+        }
     }
 }
 
@@ -269,6 +308,9 @@ resource "kubernetes_service_account" "fluentd_service_acc" {
     metadata {
         name        = var.fluentd_service_acc_name
         namespace   = var.cw_namespace_name
+        annotations = {
+            "eks.amazonaws.com/role-arn" = aws_iam_role.cw_iam_role.arn
+        }
     }
 }
 
