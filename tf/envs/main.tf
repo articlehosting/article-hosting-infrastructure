@@ -110,5 +110,7 @@ module "import_sqs" {
 
 module "k8s_monitoring" {
   source            = "../../modules/k8s_cloudwatch"
+  environment = var.env
   k8s_cluster_name  = local.cluster_name
+  k8s_oidc_url      = module.kube_cluster.kubernetes_oidc_url
 }
