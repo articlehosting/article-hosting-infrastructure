@@ -9,6 +9,7 @@ resource "aws_iam_openid_connect_provider" "oidc_service_provide" {
     client_id_list  = [
         "sts.amazonaws.com"
     ]
+    thumbprint_list = []
 }
 
 resource "aws_iam_role" "cw_iam_role" {
@@ -32,7 +33,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "cw_policy_attachement" {
-    role        = aws_role.cw_iam_role.name
+    role        = aws_iam_role.cw_iam_role.name
     policy_arn  = data.aws_iam_policy.cw_iam_policy.arn
 }
 
