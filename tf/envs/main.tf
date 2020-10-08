@@ -107,3 +107,8 @@ module "import_sqs" {
   source      = "../../modules/article-import-sqs"
   environment = var.env
 }
+
+module "k8s_monitoring" {
+  source            = "../../modules/k8s_cloudwatch"
+  k8s_cluster_name  = local.cluster_name
+}
