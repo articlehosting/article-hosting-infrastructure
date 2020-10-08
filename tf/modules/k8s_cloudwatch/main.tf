@@ -31,7 +31,7 @@ resource "aws_iam_role" "cw_iam_role" {
       "Action": "sts:AssumeRoleWithWebIdentity",
       "Condition": {
         "ForAllValues:StringEquals": {
-          "${locals.oidc_provider}:sub": [
+          "${local.oidc_provider}:sub": [
               "system:serviceaccount:${var.cw_namespace_name}:${var.cw_service_acc_name}",
               "system:serviceaccount:${var.cw_namespace_name}:${var.fluentd_service_acc_name}"
           ]
