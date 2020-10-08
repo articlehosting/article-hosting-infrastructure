@@ -12,6 +12,10 @@ resource "aws_iam_openid_connect_provider" "oidc_service_provide" {
     thumbprint_list = []
 }
 
+local {
+    oidc_provider = substr(aws_iam_openid_connect_provider.oidc_service_provide.arn,40,68)
+}
+
 resource "aws_iam_role" "cw_iam_role" {
     name                = "hive-eks-${var.environment}-monitoring-role"
 
@@ -20,12 +24,19 @@ resource "aws_iam_role" "cw_iam_role" {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Action": "sts:AssumeRole",
-      "Principal": {
-        "Service": "ec2.amazonaws.com"
-      },
       "Effect": "Allow",
-      "Sid": ""
+      "Principal": {
+        "Federated": "${aws_iam_openid_connect_provider.oidc_service_provide.arn}"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "ForAllValues:StringEquals": {
+          "${local.oidc_provider}:sub": [
+              "system:serviceaccount:${var.cw_namespace_name}:${var.cw_service_acc_name}",
+              "system:serviceaccount:${var.cw_namespace_name}:${var.fluentd_service_acc_name}"
+          ]
+        }
+      }
     }
   ]
 }
