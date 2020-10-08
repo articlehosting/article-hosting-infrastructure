@@ -444,7 +444,7 @@ resource "kubernetes_daemonset" "fluend_daemon_set" {
                 }
 
                 volume {
-                    name = "varrunlogjournallog"
+                    name = "runlogjournal"
                     host_path {
                         path = "/run/log/journal"
                     }
