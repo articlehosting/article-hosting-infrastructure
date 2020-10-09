@@ -284,6 +284,7 @@ resource "kubernetes_daemonset" "cw_daemon_set" {
 
                 termination_grace_period_seconds    = "60"
                 service_account_name                =  var.cw_service_acc_name
+                automount_service_account_token     = "true"
             }
         }
     }
@@ -383,6 +384,7 @@ resource "kubernetes_daemonset" "fluend_daemon_set" {
 
             spec {
                 service_account_name                = var.fluentd_service_acc_name
+                automount_service_account_token     = "true"
                 termination_grace_period_seconds    = "30"
 
                 init_container {
