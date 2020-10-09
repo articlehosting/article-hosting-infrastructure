@@ -9,7 +9,9 @@ resource "aws_iam_openid_connect_provider" "oidc_service_provide" {
     client_id_list  = [
         "sts.amazonaws.com"
     ]
-    thumbprint_list = []
+    thumbprint_list = [
+        "9e99a48a9960b14926bb7f3b02e22da2b0ab7280"
+    ]
 }
 
 locals {
@@ -167,7 +169,7 @@ resource "kubernetes_daemonset" "cw_daemon_set" {
             spec {
                 container {
                     name    = "cloudwatch-agent" 
-                    image   = "amazon/cloudwatch-agent:1.247345.36b249270"
+                    image   = "amazon/cloudwatch-agent:1.246396.0"
 
                     resources {
                         limits {
