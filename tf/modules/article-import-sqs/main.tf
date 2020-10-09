@@ -38,7 +38,7 @@ POLICY
   }
 }
 
-resource "aws_s3_bucket_notification" "zip_bucket_notification" {
+resource "aws_s3_bucket_notification" "bucket_notifications" {
   bucket = aws_s3_bucket.import_bucket.id
 
   queue {
@@ -48,8 +48,18 @@ resource "aws_s3_bucket_notification" "zip_bucket_notification" {
     filter_prefix   = "zip"
     filter_suffix   = ".zip"
   }
+
+  queue {
+    id              = "new-meca-article-upload"
+    queue_arn       = aws_sqs_queue.import_queue.arn
+    events          = ["s3:ObjectCreated:*"]
+    filter_prefix   = "meca"
+    filter_suffix   = ".meca"
+  }
+
 }
 
+/*
 resource "aws_s3_bucket_notification" "meca_bucket_notification" {
   bucket = aws_s3_bucket.import_bucket.id
 
@@ -61,7 +71,7 @@ resource "aws_s3_bucket_notification" "meca_bucket_notification" {
     filter_suffix   = ".meca"
   }
 }
-
+*/
 data "aws_sqs_queue" "data_import_queue" {
   name  = aws_sqs_queue.import_queue.name
 }
