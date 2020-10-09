@@ -45,6 +45,7 @@ resource "aws_s3_bucket_notification" "zip_bucket_notification" {
     id              = "new-zip-article-upload"
     queue_arn       = aws_sqs_queue.import_queue.arn
     events          = ["s3:ObjectCreated:*"]
+    filter_prefix   = "zip"
     filter_suffix   = ".zip"
   }
 }
@@ -56,6 +57,7 @@ resource "aws_s3_bucket_notification" "meca_bucket_notification" {
     id              = "new-meca-article-upload"
     queue_arn       = aws_sqs_queue.import_queue.arn
     events          = ["s3:ObjectCreated:*"]
+    filter_prefix   = "meca"
     filter_suffix   = ".meca"
   }
 }
