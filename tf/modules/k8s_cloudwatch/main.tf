@@ -377,7 +377,7 @@ resource "kubernetes_daemonset" "fluend_daemon_set" {
                     "k8s-app" = var.fluentd_ds_name
                 }
                 annotations = {
-                    config_hash = "8915de4cf9c3551a8dc74c0137a3e83569d28c71044b0359c2578d2e0461825"
+                    "config_hash" = "8915de4cf9c3551a8dc74c0137a3e83569d28c71044b0359c2578d2e0461825"
                 }
             }
 
