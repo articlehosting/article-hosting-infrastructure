@@ -114,3 +114,8 @@ module "k8s_monitoring" {
   k8s_cluster_name  = local.cluster_name
   k8s_oidc_url      = module.kube_cluster.kubernetes_oidc_url
 }
+
+module "import_ses" {
+  source  = "../../modules/article-import-ses"
+  domain  = var.domain_name
+}
