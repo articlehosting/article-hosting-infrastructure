@@ -8,3 +8,9 @@ variable "domain" {
     type        = string
     description = "Domain name"
 }
+
+variable "receiver_email" {
+    type        = string
+    description = "Recipient email"
+    default     = "hosting-alerts@hive.review"
+}

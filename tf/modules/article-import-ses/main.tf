@@ -23,3 +23,7 @@ resource "aws_ses_domain_identity_verification" "ses_verification" {
 resource "aws_ses_email_identity" "notification_email" {
   email = var.ses_domain
 }
+
+resource "aws_ses_email_identity" "recipient_email" {
+  email = var.receiver_email
+}
