@@ -24,6 +24,8 @@ controller:
             service.beta.kubernetes.io/aws-load-balancer-backend-protocol: "http"
             service.beta.kubernetes.io/aws-load-balancer-ssl-ports: "https"
             service.beta.ingress.kubernetes.io/force-ssl-redirect: "true"
+            nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+            nginx.ingress.kubernetes.io/ssl-redirect: "true"
             service.beta.kubernetes.io/aws-load-balancer-type: elb
             service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "3600"
             service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "creator=ingress,cluster=${var.k8s_cluster_name}"
