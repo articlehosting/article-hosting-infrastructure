@@ -54,10 +54,8 @@ resource "kubernetes_ingress" "article_hosing_ingress" {
 	name = "article-hosting-ingress"
 	annotations = {
 	  "kubernetes.io/ingress.class" = "nginx"
-    "alb.ingress.kubernetes.io/certificate-arn" = data.aws_acm_certificate.issued_certificate.arn
-    "alb.ingress.kubernetes.io/listen-ports" = "[{\"HTTP\": 80}, {\"HTTPS\":443}]"
-    "alb.ingress.kubernetes.io/actions.ssl-redirect" = "{\"Type\": \"redirect\", \"RedirectConfig\": { \"Protocol\": \"HTTPS\", \"Port\": \"443\", \"StatusCode\": \"HTTP_301\"}}"
- 
+    "nginx.ingress.kubernetes.io/force-ssl-redirect" = "true"
+    "nginx.ingress.kubernetes.io/ssl-redirect" = "true"
 	  # "nginx.ingress.kubernetes.io/rewrite-target" = "/"
 	  # "nginx.ingress.kubernetes.io/ssl-passthrough" = "true"
 	}
@@ -66,14 +64,6 @@ resource "kubernetes_ingress" "article_hosing_ingress" {
   spec {
 	rule {
 	  http {
-    path {
-      path = "/"
-
-      backend {
-        service_name = "ssl-redirect"
-        service_port = "use-annotation"
-      }
-    }
     path {
 		  path = "/"
 
