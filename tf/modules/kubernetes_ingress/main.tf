@@ -69,7 +69,7 @@ resource "kubernetes_ingress" "article_hosing_ingress" {
 
 		  backend {
 			service_name = "article-hosting--prod--frontend"
-			service_port = 80
+			service_port = 443
 		  }
 		}
 	  }
