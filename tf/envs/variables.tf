@@ -17,6 +17,11 @@ variable "domain_name" {
 variable "map_users" {
   default = [
     {
+      userarn  = "arn:aws:iam::540790251273:user/DanielHaarhoff"
+      username = "DanielHaarhoff"
+      groups   = ["system:masters"]
+    },
+    {
       userarn  = "arn:aws:iam::540790251273:user/GiorgioSironi"
       username = "GiorgioSironi"
       groups   = ["system:masters"]
