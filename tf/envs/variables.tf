@@ -27,26 +27,10 @@ variable "map_users" {
       groups   = ["system:masters"]
     },
     {
-      userarn  = "arn:aws:iam::540790251273:user/GlebGodonoga"
-      username = "GlebGodonoga"
+      userarn  = "arn:aws:iam::540790251273:user/article-hosting-github-organization"
+      username = "article-hosting-github-organization"
       groups   = ["system:masters"]
     },
-    {
-      userarn  = "arn:aws:iam::540790251273:user/GithubActions"
-      username = "GithubActions"
-      groups   = ["system:masters"]
-    },
-    {
-      userarn  = "arn:aws:iam::540790251273:user/RomanTudvasev"
-      username = "RomanTudvasev"
-      groups   = ["system:masters"]
-    },
-    {
-      userarn  = "arn:aws:iam::540790251273:user/MaximAgrigoroae"
-      username = "MaximAgrigoroae"
-      groups   = ["system:masters"]
-    },
-
   ]
   description = "IAM users that can access the cluster"
 }
